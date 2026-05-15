@@ -29,7 +29,9 @@
 .form-input { @apply py-1.5 px-2.5 border border-gray-200 rounded-md text-[0.8rem] text-gray-900 font-[inherit] bg-white; }
 
 /* Tables */
-th { @apply sticky top-0 bg-white text-left py-2 px-2.5 text-[0.62rem] uppercase text-gray-500 font-semibold border-b border-gray-200; }
+th {
+    @apply sticky top-0 bg-white z-20 text-left py-2 px-2.5 text-[0.62rem] uppercase text-gray-500 font-semibold border-b border-gray-200;
+}
 td { @apply py-1.75 px-2.5 tabular-nums border-b border-gray-200 text-gray-600; }
 
 /* Buttons */
