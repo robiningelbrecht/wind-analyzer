@@ -7,6 +7,11 @@ const ARC_STROKE_SPECS = [
     ['calm', 'stroke-gray-400'],
 ];
 
+/** @returns {boolean} true when pct would render as something other than 0%. */
+function isNonZeroDisplayPct(pct) {
+    return Number((pct ?? 0).toFixed(0)) > 0;
+}
+
 export class Breakdown {
     constructor() {
         this.svg = $('breakdownDonut');
@@ -17,6 +22,10 @@ export class Breakdown {
         this.tailText = $('pctTailText');
         this.crossText = $('pctCrossText');
         this.calmText = $('pctCalmText');
+        this.headRow = this.headText?.parentElement;
+        this.tailRow = this.tailText?.parentElement;
+        this.crossRow = this.crossText?.parentElement;
+        this.calmRow = this.calmText?.parentElement;
     }
 
     createArc(strokeColorClass) {
@@ -71,9 +80,16 @@ export class Breakdown {
         this.dominantPct.className = `text-[1.4rem] font-extrabold leading-[1.1] ${colorClass}`;
         this.dominantPct.textContent = dominantVal + '%';
         this.dominantType.textContent = dominant;
-        this.headText.textContent = pctHead.toFixed(0) + '%';
-        this.tailText.textContent = pctTail.toFixed(0) + '%';
-        this.crossText.textContent = pctCross.toFixed(0) + '%';
-        this.calmText.textContent = pctCalm.toFixed(0) + '%';
+        const rows = [
+            [this.headRow, this.headText, pctHead],
+            [this.tailRow, this.tailText, pctTail],
+            [this.crossRow, this.crossText, pctCross],
+            [this.calmRow, this.calmText, pctCalm],
+        ];
+        for (const [row, textEl, pct] of rows) {
+            const show = isNonZeroDisplayPct(pct);
+            row?.classList.toggle('hidden', !show);
+            if (textEl) textEl.textContent = show ? (pct ?? 0).toFixed(0) + '%' : '';
+        }
     }
 }
