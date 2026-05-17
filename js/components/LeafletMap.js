@@ -61,17 +61,11 @@ export class LeafletMap {
         this.map.addControl(new Toggle());
     }
 
-    renderRoute(segments, speed) {
+    renderRoute(segments) {
         segments.forEach(seg => {
             const line = L.polyline(
                 [[seg.p1.lat, seg.p1.lon], [seg.p2.lat, seg.p2.lon]],
-                { color: GeoUtils.segmentColor(seg.headFactor), weight: 4, opacity: 0.9 }
-            );
-            line.bindPopup(
-                `<b>${seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}</b><br>` +
-                `Bearing: ${seg.brng.toFixed(0)}\u00b0<br>` +
-                `Headwind: ${seg.headComp.toFixed(1)} ${speed}<br>` +
-                `Crosswind: ${Math.abs(seg.crossComp).toFixed(1)} ${speed}`
+                { color: GeoUtils.segmentRouteColor(seg), weight: 4, opacity: 0.9 }
             );
             this.layerGroup.addLayer(line);
         });
@@ -150,7 +144,7 @@ export class LeafletMap {
         }).addTo(this.map);
         this.layerGroup = L.layerGroup().addTo(this.map);
 
-        this.renderRoute(analysis.segments, speed);
+        this.renderRoute(analysis.segments);
         const latlngs = points.map(p => [p.lat, p.lon]);
         this.renderStartEnd(latlngs);
         this.addRecenterControl();
@@ -164,16 +158,17 @@ export class LeafletMap {
         }
     }
 
-    showHoverMarker(lat, lon, headFactor) {
+    showHoverMarker(lat, lon, seg) {
         if (!this.map) return;
+        const fill = GeoUtils.segmentRouteColor(seg);
         if (!this.hoverMarker) {
             this.hoverMarker = L.circleMarker([lat, lon], {
-                radius: 7, color: '#fff', fillColor: GeoUtils.segmentColor(headFactor),
+                radius: 7, color: '#fff', fillColor: fill,
                 fillOpacity: 1, weight: 2
             }).addTo(this.map);
         } else {
             this.hoverMarker.setLatLng([lat, lon]);
-            this.hoverMarker.setStyle({ fillColor: GeoUtils.segmentColor(headFactor) });
+            this.hoverMarker.setStyle({ fillColor: fill });
         }
     }
 

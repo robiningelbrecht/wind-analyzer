@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="canonical" href="">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="dist/app.min.css?v=8883b147" />
+  <link rel="stylesheet" href="dist/app.min.css?v=669440b0" />
   <script defer src="https://analytics.robiningelbrecht.be/script.js" data-website-id="d76855f7-bd25-47d3-a042-b4a8a9af3f77" data-domains="windahead.app,windahead.app"></script>
 </head>
 <body class="font-sans bg-gray-50 min-h-screen antialiased flex flex-col">
@@ -168,6 +168,7 @@
               <div class="flex justify-between mt-0.5 text-[0.6rem] text-gray-500">
                 <span>Tailwind</span><span>Cross</span><span>Headwind</span>
               </div>
+              <div class="text-[0.58rem] text-gray-500 mt-1">Gray = negligible along your direction</div>
             </div>
           </div>
           <!-- Strip -->
@@ -225,11 +226,8 @@
             <div class="card-title mb-4.5">Wind Breakdown</div>
             <div class="grow flex items-center gap-6">
               <div class="relative size-32.5 shrink-0">
-                <svg class="w-full h-full" viewBox="0 0 36 36">
+                <svg class="w-full h-full" viewBox="0 0 36 36" data-component="breakdownDonut">
                   <circle class="fill-none stroke-gray-200 stroke-[3.5]" cx="18" cy="18" r="15.9155"/>
-                  <circle data-component="pctHeadArc" class="fill-none stroke-[3.5] [stroke-linecap:round] [transition:stroke-dasharray_0.6s_ease] stroke-red-600" cx="18" cy="18" r="15.9155" stroke-dasharray="0 100" stroke-dashoffset="25"/>
-                  <circle data-component="pctTailArc" class="fill-none stroke-[3.5] [stroke-linecap:round] [transition:stroke-dasharray_0.6s_ease] stroke-green-600" cx="18" cy="18" r="15.9155" stroke-dasharray="0 100" stroke-dashoffset="25"/>
-                  <circle data-component="pctCrossArc" class="fill-none stroke-[3.5] [stroke-linecap:round] [transition:stroke-dasharray_0.6s_ease] stroke-amber-600" cx="18" cy="18" r="15.9155" stroke-dasharray="0 100" stroke-dashoffset="25"/>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                   <span data-component="dominantPct" class="text-[1.4rem] font-extrabold leading-[1.1]"></span>
@@ -251,6 +249,11 @@
                   <div class="size-2.5 rounded-full shrink-0 bg-amber-600"></div>
                   <span class="text-[0.82rem] text-gray-600 flex-1">Crosswind</span>
                   <span data-component="pctCrossText" class="text-[0.95rem] font-bold tabular-nums"></span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <div class="size-2.5 rounded-full shrink-0 bg-gray-400"></div>
+                  <span class="text-[0.82rem] text-gray-600 flex-1">Negligible</span>
+                  <span data-component="pctCalmText" class="text-[0.95rem] font-bold tabular-nums"></span>
                 </div>
               </div>
             </div>
@@ -395,5 +398,5 @@
   </div>
 </footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="dist/app.min.js?v=8883b147"></script></body>
+<script src="dist/app.min.js?v=669440b0"></script></body>
 </html>

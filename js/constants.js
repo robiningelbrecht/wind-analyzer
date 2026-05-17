@@ -61,3 +61,16 @@ export const WEATHER_PARAMS = [
 export const SPEED_KEY = 'wind-analyzer-speed';
 export const UNITS_KEY = 'wind-analyzer-units';
 export const THEME_KEY = 'wind-analyzer-theme';
+
+export const NO_WIND_THRESHOLD = 1;
+export const WindType = Object.freeze({
+    HEADWIND: 'headwind',
+    TAILWIND: 'tailwind',
+    CROSSWIND: 'crosswind',
+    CALM: 'calm',
+});
+
+export function windTypeShortLabel(type) {
+    if (type === WindType.CALM) return 'Negligible';
+    return type.charAt(0).toUpperCase() + type.slice(1);
+}

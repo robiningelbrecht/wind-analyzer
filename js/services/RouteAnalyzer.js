@@ -1,10 +1,11 @@
-import {GeoUtils} from '../utils/GeoUtils';
+import { GeoUtils } from '../utils/GeoUtils';
+import { NO_WIND_THRESHOLD, WindType } from '../constants';
 
 export class RouteAnalyzer {
     analyze(points, windData, startIdx, avgSpeed) {
         const segments = [];
         const weatherMarkers = [];
-        let totalDist = 0, headwindDist = 0, tailwindDist = 0, crosswindDist = 0;
+        let totalDist = 0, headwindDist = 0, tailwindDist = 0, crosswindDist = 0, calmDist = 0;
         let weightedHeadwind = 0, weightedCrosswind = 0;
         let elevGain = 0, elevLoss = 0, cumDist = 0;
         let prevWIdx = -1;
@@ -33,13 +34,25 @@ export class RouteAnalyzer {
             const headComp = windSpeed * Math.cos(relAngle);
             const crossComp = windSpeed * Math.sin(relAngle);
             const headFactor = Math.cos(relAngle);
-            const absRel = Math.abs(((GeoUtils.toDeg(relAngle) % 360) + 360) % 360);
-            const norm = absRel > 180 ? 360 - absRel : absRel;
-            const type = norm < 50 ? 'headwind' : norm > 130 ? 'tailwind' : 'crosswind';
-            if (type === 'headwind') headwindDist += dist;
-            else if (type === 'tailwind') tailwindDist += dist;
-            else crosswindDist += dist;
-            weightedHeadwind += headComp * dist;
+            const absH = Math.abs(headComp);
+            const absC = Math.abs(crossComp);
+            let type;
+            if (absH < NO_WIND_THRESHOLD && absC < NO_WIND_THRESHOLD) {
+                type = WindType.CALM;
+            } else if (absH < NO_WIND_THRESHOLD) {
+                type = WindType.CROSSWIND;
+            } else if (headComp > 0) {
+                type = WindType.HEADWIND;
+            } else {
+                type = WindType.TAILWIND;
+            }
+            if (type === WindType.HEADWIND) headwindDist += dist;
+            else if (type === WindType.TAILWIND) tailwindDist += dist;
+            else if (type === WindType.CROSSWIND) crosswindDist += dist;
+            else calmDist += dist;
+            if (type !== WindType.CALM) {
+                weightedHeadwind += headComp * dist;
+            }
             weightedCrosswind += Math.abs(crossComp) * dist;
             cumDist += dist;
             totalDist += dist;
@@ -59,6 +72,7 @@ export class RouteAnalyzer {
             pctHead: totalDist > 0 ? headwindDist / totalDist * 100 : 0,
             pctTail: totalDist > 0 ? tailwindDist / totalDist * 100 : 0,
             pctCross: totalDist > 0 ? crosswindDist / totalDist * 100 : 0,
+            pctCalm: totalDist > 0 ? calmDist / totalDist * 100 : 0,
             elevGain, elevLoss,
             maxEle: elevations.length ? Math.max(...elevations) : null,
             minEle: elevations.length ? Math.min(...elevations) : null,

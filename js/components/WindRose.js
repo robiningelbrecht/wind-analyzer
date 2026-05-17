@@ -1,3 +1,4 @@
+import { WindType } from '../constants';
 import { $ } from '../state';
 import { GeoUtils } from '../utils/GeoUtils';
 
@@ -38,7 +39,7 @@ export class WindRose {
         for (const seg of segments) {
             const idx = Math.round(seg.brng / 45) % 8;
             bins[idx].dist += seg.dist;
-            bins[idx].headW += seg.headFactor * seg.dist;
+            bins[idx].headW += (seg.type === WindType.CALM ? 0 : seg.headFactor) * seg.dist;
             totalDist += seg.dist;
         }
         const maxDist = Math.max(...bins.map(bin => bin.dist), 1);

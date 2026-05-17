@@ -1,6 +1,6 @@
 import { $ } from '../state';
 import { unitLabel, convertUnit, IMPERIAL } from '../utils/units';
-import { UV_BANDS } from '../constants';
+import { UV_BANDS, NO_WIND_THRESHOLD } from '../constants';
 import { GeoUtils } from '../utils/GeoUtils';
 import { Popover } from './Popover';
 
@@ -48,13 +48,17 @@ export class RouteStats {
             this.elevUnit.textContent = unitLabel(unitSystem, 'elev');
         }
 
+        const ah = analysis.avgHead;
         this.statNetValue.className = STAT_VALUE_CLASS;
-        if (analysis.avgHead > 0.5) {
+        if (ah > NO_WIND_THRESHOLD) {
             this.statNetValue.classList.add('text-red-600');
             this.statNetLabel.textContent = 'Net Headwind';
-        } else if (analysis.avgHead < -0.5) {
+        } else if (ah < -NO_WIND_THRESHOLD) {
             this.statNetValue.classList.add('text-green-600');
             this.statNetLabel.textContent = 'Net Tailwind';
+        } else if (Math.abs(ah) <= NO_WIND_THRESHOLD) {
+            this.statNetValue.classList.add('text-gray-500');
+            this.statNetLabel.textContent = 'Net wind negligible';
         } else {
             this.statNetValue.classList.add('text-amber-600');
             this.statNetLabel.textContent = 'Net Crosswind';

@@ -1,4 +1,4 @@
-import { WIND_LABELS, BEAUFORT_SCALE } from '../constants';
+import { WIND_LABELS, BEAUFORT_SCALE, WindType } from '../constants';
 
 export class GeoUtils {
     static toRad(d) { return d * Math.PI / 180; }
@@ -35,6 +35,12 @@ export class GeoUtils {
         }
         const t = (norm - 0.5) / 0.5;
         return `rgb(${Math.round(251 - 12 * t)},${Math.round(191 - 123 * t)},${Math.round(36 + 32 * t)})`;
+    }
+
+    /** Route / strip color: neutral gray for calm segments. */
+    static segmentRouteColor(seg) {
+        if (seg.type === WindType.CALM) return 'rgb(156, 163, 175)';
+        return GeoUtils.segmentColor(seg.headFactor);
     }
 
     static smoothElevations(points) {

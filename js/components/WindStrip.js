@@ -1,3 +1,4 @@
+import { WindType, windTypeShortLabel } from '../constants';
 import { GeoUtils } from '../utils/GeoUtils';
 import { unitLabel, convertUnit } from '../utils/units';
 import { $, state } from '../state';
@@ -18,7 +19,7 @@ export class WindStrip {
         segments.forEach(seg => {
             const div = document.createElement('div');
             div.style.flex = `${seg.dist} 0 0`;
-            div.style.background = GeoUtils.segmentColor(seg.headFactor);
+            div.style.background = GeoUtils.segmentRouteColor(seg);
             this.strip.appendChild(div);
             cumDist += seg.dist;
             this.segments.push({ ...seg, cumDist });
@@ -38,11 +39,13 @@ export class WindStrip {
             const dist = convertUnit(seg.cumDist / 1000, 'dist', unitSystem).toFixed(1);
             const distU = unitLabel(unitSystem, 'dist');
             const speedU = unitLabel(unitSystem, 'speed');
-            const typeClass = seg.type === 'headwind' ? 'text-red-600' : seg.type === 'tailwind' ? 'text-green-600' : 'text-amber-600';
-            this.tooltip.innerHTML = `<span class="font-semibold ${typeClass}">${seg.type.charAt(0).toUpperCase() + seg.type.slice(1)}</span> &middot; ${dist} ${distU}<br>Head: ${seg.headComp.toFixed(1)} ${speedU} &middot; Cross: ${Math.abs(seg.crossComp).toFixed(1)} ${speedU}`;
+            const typeClass = seg.type === WindType.HEADWIND ? 'text-red-600' : seg.type === WindType.TAILWIND ? 'text-green-600'
+                : seg.type === WindType.CALM ? 'text-gray-500' : 'text-amber-600';
+            const typeLabel = windTypeShortLabel(seg.type);
+            this.tooltip.innerHTML = `<span class="font-semibold ${typeClass}">${typeLabel}</span> &middot; ${dist} ${distU}<br>Along route: ${seg.headComp.toFixed(1)} ${speedU} &middot; Cross: ${Math.abs(seg.crossComp).toFixed(1)} ${speedU}`;
             this.tooltip.style.left = (event.clientX - rect.left) + 'px';
             this.tooltip.classList.remove('hidden');
-            map.showHoverMarker(midLat, midLon, seg.headFactor);
+            map.showHoverMarker(midLat, midLon, seg);
         });
 
         this.container.addEventListener('mouseleave', () => {

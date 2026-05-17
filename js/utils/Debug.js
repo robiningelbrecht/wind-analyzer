@@ -56,6 +56,7 @@ export class Debug {
             'Headwind': analysis.pctHead.toFixed(1) + '%',
             'Tailwind': analysis.pctTail.toFixed(1) + '%',
             'Crosswind': analysis.pctCross.toFixed(1) + '%',
+            'Negligible': (analysis.pctCalm ?? 0).toFixed(1) + '%',
         });
         this.log('Open-Meteo data', {
             'Request': { lat, lon, date: dateStr, unitSystem },
