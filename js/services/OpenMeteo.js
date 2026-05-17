@@ -2,11 +2,14 @@ import { WEATHER_PARAMS } from '../constants';
 import { IMPERIAL } from '../utils/units';
 
 export class OpenMeteo {
-    async fetch(lat, lon, localDate, unitSystem) {
+    async fetch(lat, lon, localDate, unitSystem, weatherModel = 'auto') {
         const isImperial = unitSystem === IMPERIAL;
         const tempUnit = isImperial ? 'fahrenheit' : 'celsius';
         const windUnit = isImperial ? 'mph' : 'kmh';
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=${WEATHER_PARAMS}&daily=uv_index_max&start_date=${localDate.dateStr}&end_date=${localDate.nextDayStr}&temperature_unit=${tempUnit}&wind_speed_unit=${windUnit}&timezone=auto`;
+        let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=${WEATHER_PARAMS}&daily=uv_index_max&start_date=${localDate.dateStr}&end_date=${localDate.nextDayStr}&temperature_unit=${tempUnit}&wind_speed_unit=${windUnit}&timezone=auto`;
+        if (weatherModel && weatherModel !== 'auto') {
+            url += `&models=${encodeURIComponent(weatherModel)}`;
+        }
         let res;
         try {
             res = await window.fetch(url);

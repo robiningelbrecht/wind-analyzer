@@ -28,6 +28,12 @@
 /* Forms */
 .form-label { @apply text-[0.78rem] font-semibold text-gray-500; }
 .form-input { @apply py-1.5 px-2.5 border border-gray-200 rounded-md text-[0.8rem] text-gray-900 font-[inherit] bg-white; }
+select.form-input {
+    @apply text-gray-600;
+    option{
+        @apply text-gray-600 bg-white;
+    }
+}
 
 .btn-icon { @apply size-8.5 bg-gray-200 border border-gray-200 rounded-full cursor-pointer flex items-center justify-center text-gray-500 transition-colors shrink-0 p-0 hover:bg-gray-300 hover:text-gray-900; }
 .btn-icon-sm { @apply size-7 bg-gray-200 border border-gray-200 rounded-full cursor-pointer flex items-center justify-center text-gray-500 transition-colors shrink-0 p-0 text-base leading-none hover:bg-gray-300 hover:text-gray-900; }

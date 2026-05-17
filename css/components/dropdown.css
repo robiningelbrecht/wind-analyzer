@@ -2,7 +2,7 @@ div[data-dropdown] {
     @apply relative;
 }
 div[data-dropdown] > button + * {
-    @apply hidden absolute right-0 top-full mt-2 w-56 z-1100
+    @apply hidden absolute right-0 top-full mt-2 w-65 min-w-0 max-w-[calc(100vw-1rem)] z-1100
            bg-white border border-gray-200 rounded-lg shadow-lg;
 }
 div[data-dropdown] > button[aria-expanded="true"] + * {

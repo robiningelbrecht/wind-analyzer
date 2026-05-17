@@ -2,7 +2,7 @@ import { $, state, setView, setLoading, setError } from './state';
 import { assertUniqueDataComponents } from './utils/assertUniqueDataComponents';
 import { LocalDate } from './utils/LocalDate';
 import { unitLabel, METRIC, IMPERIAL } from './utils/units';
-import { SPEED_KEY, UNITS_KEY, THEME_KEY } from './constants';
+import { SPEED_KEY, UNITS_KEY, THEME_KEY, WEATHER_MODEL_KEY, WEATHER_MODELS } from './constants';
 import { GpxParser } from './services/GpxParser';
 import { OpenMeteo } from './services/OpenMeteo';
 import { RouteAnalyzer } from './services/RouteAnalyzer';
@@ -52,6 +52,7 @@ function renderResults() {
     const dateStr = date.toLocaleDateString(undefined, { weekday: 'short', ...opts });
     $('dateNote').textContent = dateStr;
     $('dateNoteLg').textContent = dateStr;
+    $('weatherModelSelect').value = state.weatherModel;
 
     stats.render(state);
 
@@ -117,13 +118,13 @@ async function runAnalysis() {
         const lat = state.centroid.lat.toFixed(4);
         const lon = state.centroid.lon.toFixed(4);
         const localDate = new LocalDate(state.dateTime);
-        const cacheKey = `${lat},${lon},${localDate.dateStr},${state.unitSystem}`;
+        const cacheKey = `${lat},${lon},${localDate.dateStr},${state.unitSystem},${state.weatherModel}`;
 
         let data;
         if (state._weatherCache && state._weatherCache.key === cacheKey) {
             data = state._weatherCache.data;
         } else {
-            data = await openMeteo.fetch(lat, lon, localDate, state.unitSystem);
+            data = await openMeteo.fetch(lat, lon, localDate, state.unitSystem, state.weatherModel);
             state._weatherCache = { key: cacheKey, data };
         }
         const weather = openMeteo.extract(data, localDate);
@@ -143,7 +144,16 @@ async function runAnalysis() {
         state.analysis = routeAnalyzer.analyze(pts, windData, startIdx, state.avgSpeed);
         state.weather = weather;
 
-        debug.logAnalysis({ lat, lon, dateStr: localDate.dateStr, unitSystem: state.unitSystem, weather, analysis: state.analysis, data });
+        debug.logAnalysis({
+            lat,
+            lon,
+            dateStr: localDate.dateStr,
+            unitSystem: state.unitSystem,
+            weatherModel: state.weatherModel,
+            weather,
+            analysis: state.analysis,
+            data,
+        });
         state.windDir = weather.windDirection10m;
         state.windSpeed = weather.windSpeed10m;
 
@@ -184,6 +194,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUnitLabels();
 
     $('resetBtn').addEventListener('click', reset);
+
+    const dropdown = new Dropdown('mainMenu');
+
     $('faqBtn').addEventListener('click', () => {
         dropdown.close();
         $('faqDialog').showModal();
@@ -212,7 +225,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         map.updateTiles();
     });
 
-    const dropdown = new Dropdown('mainMenu');
+    const weatherModelSelect = $('weatherModelSelect');
+    WEATHER_MODELS.forEach(({ id, label }) => {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = label;
+        weatherModelSelect.appendChild(opt);
+    });
+    weatherModelSelect.value = state.weatherModel;
+    weatherModelSelect.addEventListener('change', (e) => {
+        state.weatherModel = e.target.value;
+        localStorage.setItem(WEATHER_MODEL_KEY, state.weatherModel);
+        dropdown.close();
+        if (state.centroid) {
+            runAnalysis();
+        }
+    });
 
     const dropZone = new DropZone();
     dropZone.bind(processFile, processGpx);

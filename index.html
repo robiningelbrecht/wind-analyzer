@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="canonical" href="">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="dist/app.min.css?v=92a7f1e5" />
+  <link rel="stylesheet" href="dist/app.min.css?v=0209d0fc" />
   <script defer src="https://analytics.robiningelbrecht.be/script.js" data-website-id="d76855f7-bd25-47d3-a042-b4a8a9af3f77" data-domains="windahead.app,windahead.app"></script>
 </head>
 <body class="font-sans bg-gray-50 min-h-screen antialiased flex flex-col">
@@ -99,6 +99,16 @@
                   <input id="themeToggle" data-component="themeToggle" type="checkbox" class="peer sr-only">
                   <div class="ms-auto relative h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-orange-600 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
+              </li>
+              <li class="min-w-0 px-2 py-1.5 hover:bg-gray-50 rounded">
+                <div class="flex items-center gap-1.5 mb-1.5 text-gray-600">
+                  <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    <path d="M22 10a3 3 0 0 0-3-3h-2.207a5.502 5.502 0 0 0-10.702.5"/>
+                  </svg>
+                  <span class="text-[0.82rem] font-medium">Forecast model</span>
+                </div>
+                <select id="weatherModelSelect" data-component="weatherModelSelect" title="Open-Meteo numerical weather model" aria-label="Forecast weather model" class="form-input box-border w-full max-w-full min-w-0 py-1.5 text-[0.78rem] cursor-pointer"></select>
               </li>
               <li class="border-t border-gray-200 mt-1 pt-1">
                 <a href="https://statistics-for-strava.robiningelbrecht.be" target="_blank" class="inline-flex items-center w-full p-2 hover:bg-gray-50 rounded transition-colors">
@@ -422,5 +432,5 @@
   </div>
 </footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="dist/app.min.js?v=92a7f1e5"></script></body>
+<script src="dist/app.min.js?v=0209d0fc"></script></body>
 </html>

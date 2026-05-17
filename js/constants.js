@@ -61,6 +61,16 @@ export const WEATHER_PARAMS = [
 export const SPEED_KEY = 'wind-analyzer-speed';
 export const UNITS_KEY = 'wind-analyzer-units';
 export const THEME_KEY = 'wind-analyzer-theme';
+export const WEATHER_MODEL_KEY = 'wind-analyzer-weather-model';
+
+export const WEATHER_MODELS = [
+    { id: 'auto', label: 'Automatic (best match)' },
+    { id: 'gfs_seamless', label: 'NOAA GFS (+ HRRR in the US)' },
+    { id: 'icon_seamless', label: 'DWD ICON (Europe)' },
+    { id: 'ecmwf_ifs025', label: 'ECMWF IFS (global)' },
+    { id: 'ukmo_seamless', label: 'UK Met Office' },
+    { id: 'gem_global', label: 'GEM (Canada, global)' },
+];
 
 export const NO_WIND_THRESHOLD = 1;
 export const WindType = Object.freeze({

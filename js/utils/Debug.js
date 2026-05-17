@@ -30,6 +30,7 @@ export class Debug {
             'Screen': `${screen.width}x${screen.height} @${devicePixelRatio}x`,
             'Theme': this.state.isDarkMode ? 'dark' : 'light',
             'Unit System': this.state.unitSystem,
+            'Weather model': this.state.weatherModel,
             'Touch': 'ontouchstart' in window,
         });
     }
@@ -46,11 +47,12 @@ export class Debug {
     }
 
     logAnalysis(params) {
-        const { lat, lon, dateStr, unitSystem, weather, analysis, data } = params;
+        const { lat, lon, dateStr, unitSystem, weatherModel, weather, analysis, data } = params;
         this.log('Analysis', {
             'Centroid': `${lat}, ${lon}`,
             'Date': dateStr,
             'Unit system': unitSystem,
+            'Weather model': weatherModel,
             'Segments': analysis.segments.length,
             'Total distance': (analysis.totalDist / 1000).toFixed(2) + ' km',
             'Headwind': analysis.pctHead.toFixed(1) + '%',
@@ -59,7 +61,7 @@ export class Debug {
             'Negligible': (analysis.pctCalm ?? 0).toFixed(1) + '%',
         });
         this.log('Open-Meteo data', {
-            'Request': { lat, lon, date: dateStr, unitSystem },
+            'Request': { lat, lon, date: dateStr, unitSystem, weatherModel },
             'Extracted hour': weather,
             'Full hourly response': data.hourly,
         });
@@ -89,6 +91,7 @@ export class Debug {
             state: {
                 view: this.state.view,
                 unitSystem: this.state.unitSystem,
+                weatherModel: this.state.weatherModel,
                 dateTime: this.state.dateTime,
                 avgSpeed: this.state.avgSpeed,
                 routeName: this.state.routeName,
