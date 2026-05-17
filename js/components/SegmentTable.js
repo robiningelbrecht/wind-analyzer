@@ -30,7 +30,7 @@ export class SegmentTable {
             const elevVal = row.elevation !== null ? convertUnit(row.elevation, 'elev', unitSystem).toFixed(0) + '\u00a0' + elev : '-';
             const bar = this.netWindBar.render(row.headComp, maxAbs, row.type === WindType.CALM);
             const typeLabel = windTypeShortLabel(row.type);
-            return `<tr class="even:bg-gray-50">
+            return `<tr>
                 <td>${row.index}</td>
                 <td>${row.bearing.toFixed(0)}\u00b0 <span class="text-[0.68rem] text-gray-500">${GeoUtils.windLabel(row.bearing)}</span></td>
                 <td><div class="flex items-center gap-2 min-w-0">${bar}<span class="${colorClass} whitespace-nowrap">${row.headComp.toFixed(1)}\u00a0${speed}</span></div></td>

@@ -5,6 +5,7 @@
 @import "./components/dropdown.css";
 @import "./components/leaflet-controls.css";
 @import "./components/popover.css";
+@import "./components/data-table.css";
 @source "../index.html";
 @source "../js/**/*.js";
 
@@ -28,17 +29,17 @@
 .form-label { @apply text-[0.78rem] font-semibold text-gray-500; }
 .form-input { @apply py-1.5 px-2.5 border border-gray-200 rounded-md text-[0.8rem] text-gray-900 font-[inherit] bg-white; }
 
-/* Tables */
-th {
-    @apply sticky top-0 bg-white z-20 text-left py-2 px-2.5 text-[0.62rem] uppercase text-gray-500 font-semibold border-b border-gray-200;
-}
-td { @apply py-1.75 px-2.5 tabular-nums border-b border-gray-200 text-gray-600; }
-
-/* Buttons */
 .btn-icon { @apply size-8.5 bg-gray-200 border border-gray-200 rounded-full cursor-pointer flex items-center justify-center text-gray-500 transition-colors shrink-0 p-0 hover:bg-gray-300 hover:text-gray-900; }
 .btn-icon-sm { @apply size-7 bg-gray-200 border border-gray-200 rounded-full cursor-pointer flex items-center justify-center text-gray-500 transition-colors shrink-0 p-0 text-base leading-none hover:bg-gray-300 hover:text-gray-900; }
 .btn-primary { @apply inline-block py-2.5 px-8 bg-orange-600 text-white rounded-[20px] cursor-pointer font-semibold text-[0.85rem] transition-all border-none hover:bg-orange-700 active:scale-[0.97]; }
 .btn-icon.hidden, .btn-icon-sm.hidden { @apply hidden; }
+
+summary .chevron {
+    @apply transition-transform duration-200 ease-out;
+}
+[open] summary .chevron {
+    @apply rotate-90;
+}
 
 /* FAQ */
 dialog[data-component="faqDialog"] dt { @apply text-[0.82rem] font-semibold mb-1 text-gray-900; }

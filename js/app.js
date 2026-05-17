@@ -14,6 +14,7 @@ import { Breakdown } from './components/Breakdown';
 import { WindRose } from './components/WindRose';
 import { Weather } from './components/Weather';
 import { SegmentTable } from './components/SegmentTable';
+import { HourlyForecastTable } from './components/HourlyForecastTable';
 import { DropZone } from './components/DropZone';
 import { Dropdown } from './components/Dropdown';
 import { Tour } from './components/Tour';
@@ -28,7 +29,7 @@ const map = new LeafletMap();
 const windStrip = new WindStrip();
 const tour = new Tour();
 
-let stats, breakdown, windRose, weather, segmentTable;
+let stats, breakdown, windRose, weather, segmentTable, hourlyForecastTable;
 
 function updateUnitLabels() {
     $('speedUnit').textContent = unitLabel(state.unitSystem, 'speed');
@@ -62,6 +63,7 @@ function renderResults() {
     }
 
     segmentTable.render(state);
+    hourlyForecastTable.render(state);
     map.render(state);
     windStrip.render(state);
 }
@@ -168,6 +170,7 @@ function reset() {
     stats.hide();
     $('cardsSection').classList.add('hidden');
     segmentTable.hide();
+    hourlyForecastTable.hide();
     map.destroy();
     keyValueRepository.delete('lastGpx');
     setView('upload');
@@ -236,6 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     windRose = new WindRose();
     weather = new Weather();
     segmentTable = new SegmentTable();
+    hourlyForecastTable = new HourlyForecastTable();
     windStrip.bind(map);
 
     const cachedGpx = await keyValueRepository.get('lastGpx');
